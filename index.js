@@ -10,6 +10,8 @@ const port = process.env.PORT || 3000;
 //Config JSON response
 app.use(express.json());
 
+app.use(cors());
+
 app.listen(port, () => {
   console.log(`App rodando! Acesse: http://localhost:${port}`);
 });
