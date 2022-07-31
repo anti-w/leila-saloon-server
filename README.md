@@ -14,13 +14,14 @@ Esse sistema foi desenvolvido para um desafio proposto pela empresa [DSIN - Tecn
 
 - [x]  Conexão com a base de dados na nuvem (MongoDB Atlas)
 - [x]  Criar usuário
-- [ ]  Agendar horário
-- [ ]  Listar horários agendados pelo usuário
+- [x]  Agendar horário
+- [x]  Listar horários agendados pelo usuário
 - [x]  Utilizar midleware para criar token seguro
 - [x]  Criptografar senha do usuário em virtude da senha ser pessoal
-- [ ]  Criar usuário admin
 - [x]  Autenticar usuário
+- [ ]  Criar usuário admin
 - [ ]  Gerenciar agendamentos
+- [ ]  Filtrar histórico de horários por um período de tempo
 - [ ]  Elaborar indicadores administrativos 
 
 ## Stack utilizada
@@ -59,7 +60,7 @@ Instale as dependências
 Inicie o servidor
 
 ```bash
-  npm run start
+  npm start
 ```
 
 Entre seguir as boas práticas em esconder variáveis de ambientes e facilitar a correção, optei por seguir as boas práticas, por isso segue via e-mail as variáveis de ambientes necessárias para o projeto funcionar no ambiente local.
@@ -88,6 +89,43 @@ Entre seguir as boas práticas em esconder variáveis de ambientes e facilitar a
 | `email`      | `string` | **Obrigatório**. E-mail do usuário |
 | `password`      | `string` | **Obrigatório**. Senha do usuário |
 | `confirmpassword`      | `string` | **Obrigatório**. Senha do usuário novamente |
+
+#### Retorna a lista de agendamentos do usuário se o token for válido
+
+```http
+  GET /user/:id
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `userId`      | `string` | **Obrigatório**. Id do usuário|
+|
+
+#### Atualiza o agendamento, serviço ou ambos de acordo com a necessidade
+
+```http
+  PUT /user/:scheduleId
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `scheduleId`      | `string` | **Obrigatório**. Id do usuário|
+| `date`      | `date` |  Nova data|
+| `service`      | `string` |  Novo serviço|
+
+#### Cria o agendamento caso o horário ainda não tenha sido selecionado
+
+```http
+  POST /user/id:/schedule
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `id`      | `string` | **Obrigatório**. Id do usuário|
+| `date`      | `date` |  **Obrigatório**. Data selecionada para agendamento|
+| `service`      | `string` |  **Obrigatório**. Serviço selecionado para agendamento|
+| `userName`      | `string` |  **Obrigatório**. Nome do usuário|
+ 
 
 
 ## Aprendizados
