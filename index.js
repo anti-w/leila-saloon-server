@@ -44,7 +44,7 @@ app.get("/user/:id", checkToken, async (req, res) => {
 });
 
 //Private Route
-app.post("/user/:id/schedule", checkToken, async (req, res) => {
+app.post("/user/:id/schedule", async (req, res) => {
   const id = req.params.id;
   const { userName, date, service } = req.body;
 
