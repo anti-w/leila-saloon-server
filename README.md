@@ -6,7 +6,9 @@ Trata-se de um sistema web para cadastro dos clientes do salão de beleza, agend
 
 ##
 
-Esse sistema foi desenvolvido para um desafio proposto pela empresa [DSIN - Tecnologia da Informação](https://www.dsin.com.br/) para a vaga de Estágio em Desenvolvimento.
+Esse sistema foi desenvolvido para um desafio proposto pela empresa [DSIN - Tecnologia da Informação](https://www.dsin.com.br/) para a vaga de Estágio em Desenvolvimento. Ele está divido pensando na arquitetura mordena de desenvolvimento web, onde o servidor é desacoplado da página, o que me traz vantagens tanto para manunteção, quanto para deploy e versionamento. 
+- [Front-End](https://github.com/anti-w/leila-saloon-web)
+- [Back-End](https://github.com/anti-w/leila-saloon-server)
 
 
 
