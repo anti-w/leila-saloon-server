@@ -29,30 +29,61 @@ app.get("/", async (req, res) => {
   });
 });
 
-//Private Route
+//List users schedules with valid token
 app.get("/user/:id", checkToken, async (req, res) => {
   const id = req.params.id;
 
-  // check if user exists
-  const user = await User.findById(id, "-password");
+  const schedules = await Schedule.find({
+    userId: id,
+  });
 
-  if (!user) {
-    return res.status(404).json({ msg: "Usuário não encontrado!" });
-  }
-
-  res.status(200).json({ user });
+  res.status(200).json({ schedules });
 });
 
-//Private Route
+// Update schedule by ID
+app.put("/user/:scheduleId", async (req, res) => {
+  const scheduleId = req.params.scheduleId;
+  const { service, date } = req.body;
+
+  const isoDate = new Date(date).toISOString();
+
+  const result = await Schedule.updateOne(
+    {
+      _id: scheduleId,
+    },
+    {
+      $set: {
+        date: isoDate,
+        service: service,
+      },
+    }
+  );
+
+  if (result.modifiedCount) {
+    res.status(200).json({
+      msg: "Horário alterado com sucesso",
+    });
+  }
+  if (!result.modifiedCount) {
+    res.status(200).json({
+      msg: "Nenhuma modificação feita",
+    });
+  }
+});
+
+//Create schedule only if date is available
 app.post("/user/:id/schedule", async (req, res) => {
   const id = req.params.id;
   const { userName, date, service } = req.body;
 
-  // check if user exists
-  const user = await User.findById(id, "-password");
+  const isoDate = new Date(date).toISOString();
 
-  if (!user) {
-    return res.status(404).json({ msg: "Usuário não encontrado!" });
+  const dateSelected = await Schedule.findOne({ date: isoDate });
+
+  if (dateSelected) {
+    return res.status(422).json({
+      msg: "Outro serviço registrado na mesma data",
+    });
   }
 
   // create schedule
