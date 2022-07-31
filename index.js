@@ -20,6 +20,7 @@ app.listen(port, () => {
 //Models
 
 const User = require("./models/User");
+const Schedule = require("./models/Schedule");
 
 //Public Route
 app.get("/", async (req, res) => {
@@ -40,6 +41,37 @@ app.get("/user/:id", checkToken, async (req, res) => {
   }
 
   res.status(200).json({ user });
+});
+
+//Private Route
+app.post("/user/:id/schedule", checkToken, async (req, res) => {
+  const id = req.params.id;
+  const { userName, date, service } = req.body;
+
+  // check if user exists
+  const user = await User.findById(id, "-password");
+
+  if (!user) {
+    return res.status(404).json({ msg: "Usuário não encontrado!" });
+  }
+
+  // create schedule
+  const schedule = new Schedule({
+    date,
+    userName,
+    service,
+    userId: id,
+  });
+
+  try {
+    await schedule.save();
+
+    res.status(201).json({
+      msg: "Horário agendado com sucesso",
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 function checkToken(req, res, next) {

@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
-const User = mongoose.model("Schedule", {
+const Schedule = mongoose.model("Schedule", {
   date: Date,
-  email: String,
-  password: String,
+  userName: String,
+  userId: mongoose.Schema.Types.ObjectId,
+  service: String,
 });
 
-module.exports = User;
+module.exports = Schedule;
