@@ -30,26 +30,42 @@ app.get("/", async (req, res) => {
 });
 
 //List users schedules with valid token
-app.get("/user/:id", checkToken, async (req, res) => {
-  const id = req.params.id;
+app.get("/schedule/read/:userId", checkToken, async (req, res) => {
+  const userId = req.params.userId;
+  const isoDate = new Date();
 
-  const schedules = await Schedule.find({
-    userId: id,
+  const pastSchedules = await Schedule.find({
+    userId,
+    date: { $lte: isoDate },
   });
 
-  res.status(200).json({ schedules });
+  const presentSchedules = await Schedule.find({
+    userId,
+    date: { $gte: isoDate },
+  });
+
+  res.status(200).json({ pastSchedules, presentSchedules });
+});
+
+//Cancel (delete) schedule by id
+app.delete("/schedule/delete/:id", checkToken, async (req, res) => {
+  const _id = req.params.id;
+
+  const deletedSchedule = await Schedule.findByIdAndDelete(_id);
+
+  res.status(200).json({ deletedSchedule });
 });
 
 // Update schedule by ID
-app.put("/user/:scheduleId", async (req, res) => {
-  const scheduleId = req.params.scheduleId;
+app.put("/schedule/update/:id", async (req, res) => {
+  const _id = req.params.id;
   const { service, date } = req.body;
 
   const isoDate = new Date(date).toISOString();
 
   const result = await Schedule.updateOne(
     {
-      _id: scheduleId,
+      _id,
     },
     {
       $set: {
@@ -72,8 +88,8 @@ app.put("/user/:scheduleId", async (req, res) => {
 });
 
 //Create schedule only if date is available
-app.post("/user/:id/schedule", async (req, res) => {
-  const id = req.params.id;
+app.post("/schedule/create/:userId", async (req, res) => {
+  const userId = req.params.userId;
   const { userName, date, service } = req.body;
 
   const isoDate = new Date(date).toISOString();
@@ -91,7 +107,7 @@ app.post("/user/:id/schedule", async (req, res) => {
     date,
     userName,
     service,
-    userId: id,
+    userId,
   });
 
   try {
@@ -123,18 +139,18 @@ function checkToken(req, res, next) {
 }
 
 //Register User
-app.post("/auth/register", async (req, res) => {
+app.post("/user/register", async (req, res) => {
   const { name, email, password, confirmpassword } = req.body;
 
   //validation
   if (!name) {
-    return res.status(422).json({ msg: "O nome é obrigatório mané" });
+    return res.status(422).json({ msg: "O nome é obrigatório" });
   }
   if (!email) {
-    return res.status(422).json({ msg: "O e-mail é obrigatório mané" });
+    return res.status(422).json({ msg: "O e-mail é obrigatório" });
   }
   if (!password) {
-    return res.status(422).json({ msg: "O password é obrigatório mané" });
+    return res.status(422).json({ msg: "A senha é obrigatória" });
   }
   if (password !== confirmpassword) {
     return res.status(422).json({ msg: "As senhas não são iguais" });
@@ -177,7 +193,7 @@ app.post("/auth/register", async (req, res) => {
 });
 
 //Login User
-app.post("/auth/login", async (req, res) => {
+app.post("/user/login", async (req, res) => {
   const { email, password } = req.body;
 
   if (!email) {
