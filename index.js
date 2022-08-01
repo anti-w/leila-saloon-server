@@ -42,7 +42,7 @@ app.get("/schedule/read/:userId", checkToken, async (req, res) => {
   const presentSchedules = await Schedule.find({
     userId,
     date: { $gte: isoDate },
-  });
+  }).sort({ date: 1 });
 
   res.status(200).json({ pastSchedules, presentSchedules });
 });
