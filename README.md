@@ -37,6 +37,12 @@ Esse sistema foi desenvolvido para um desafio proposto pela empresa [DSIN - Tecn
 - [Bcrypt](https://www.npmjs.com/package/bcrypt)
 - [MongoDB](https://www.mongodb.com/)
 
+## Galeria
+
+![Postman Routes](https://res.cloudinary.com/dscztnlqq/image/upload/v1659344817/leila-saloon/Postman%20routes.png)
+
+![Server Structure](https://res.cloudinary.com/dscztnlqq/image/upload/v1659345661/leila-saloon/Captura_de_Tela_27_egq4yr.png)
+
 
 
 ## Rodando localmente
