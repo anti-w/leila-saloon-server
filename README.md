@@ -77,7 +77,7 @@ Entre seguir as boas práticas em esconder variáveis de ambientes e facilitar a
 #### Retorna usuário e o token caso informações forem corretas
 
 ```http
-  POST /auth/login
+  POST /user/login
 ```
 
 | Parâmetro   | Tipo       | Descrição                           |
@@ -88,7 +88,7 @@ Entre seguir as boas práticas em esconder variáveis de ambientes e facilitar a
 #### Retorna mensagem informando erro ocorrido ou sucesso caso o cadatro seja realizado
 
 ```http
-  POST /auth/register
+  POST /user/register
 ```
 
 | Parâmetro   | Tipo       | Descrição                                   |
@@ -98,38 +98,47 @@ Entre seguir as boas práticas em esconder variáveis de ambientes e facilitar a
 | `password`      | `string` | **Obrigatório**. Senha do usuário |
 | `confirmpassword`      | `string` | **Obrigatório**. Senha do usuário novamente |
 
-#### Retorna a lista de agendamentos do usuário se o token for válido
+#### Retorna a lista de agendamentos já passados e no presente do usuário se o token for válido
 
 ```http
-  GET /user/:id
+  GET /schedule/read/:userId
 ```
 
 | Parâmetro   | Tipo       | Descrição                                   |
 | :---------- | :--------- | :------------------------------------------ |
 | `userId`      | `string` | **Obrigatório**. Id do usuário|
-|
 
-#### Atualiza o agendamento, serviço ou ambos de acordo com a necessidade
-
+#### Retorna mensagem de agendamento deletado com sucesso
 ```http
-  PUT /user/:scheduleId
+  DELETE /schedule/delete/:id
 ```
 
 | Parâmetro   | Tipo       | Descrição                                   |
 | :---------- | :--------- | :------------------------------------------ |
-| `scheduleId`      | `string` | **Obrigatório**. Id do usuário|
+| `id`      | `string` | **Obrigatório**. Id do agendamento|
+
+
+#### Atualiza o agendamento, serviço ou ambos de acordo com a necessidade
+
+```http
+  PUT /schedule/update/:id
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `id`      | `string` | **Obrigatório**. Id do agendamento|
 | `date`      | `date` |  Nova data|
 | `service`      | `string` |  Novo serviço|
 
 #### Cria o agendamento caso o horário ainda não tenha sido selecionado
 
 ```http
-  POST /user/id:/schedule
+  POST /schedule/create/:userId
 ```
 
 | Parâmetro   | Tipo       | Descrição                                   |
 | :---------- | :--------- | :------------------------------------------ |
-| `id`      | `string` | **Obrigatório**. Id do usuário|
+| `userId`      | `string` | **Obrigatório**. Id do usuário|
 | `date`      | `date` |  **Obrigatório**. Data selecionada para agendamento|
 | `service`      | `string` |  **Obrigatório**. Serviço selecionado para agendamento|
 | `userName`      | `string` |  **Obrigatório**. Nome do usuário|
