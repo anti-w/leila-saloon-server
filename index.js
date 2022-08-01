@@ -53,7 +53,8 @@ app.delete("/schedule/delete/:id", checkToken, async (req, res) => {
 
   const deletedSchedule = await Schedule.findByIdAndDelete(_id);
 
-  res.status(200).json({ deletedSchedule });
+  if (deletedSchedule) return;
+  res.status(200).json({ msg: "Horário deletado com sucesso" });
 });
 
 // Update schedule by ID
